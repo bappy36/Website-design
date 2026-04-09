@@ -1,0 +1,57 @@
+<footer class="bg-[#1a1a1a] text-white py-24 border-t border-white/10">
+  <div class="container">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-16">
+      <div class="col-span-2">
+        <h2 class="text-3xl font-serif mb-8 tracking-widest uppercase">Aethelgard</h2>
+        <p class="text-white/60 max-w-sm leading-relaxed italic mb-8">
+          "Preserving the past for the future. Our curated collection of antiques represents the pinnacle of craftsmanship and history."
+        </p>
+        <div class="flex gap-6">
+          <a href="#" class="text-white/40 hover:text-accent transition-colors">Instagram</a>
+          <a href="#" class="text-white/40 hover:text-accent transition-colors">Pinterest</a>
+          <a href="#" class="text-white/40 hover:text-accent transition-colors">Journal</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-[10px] uppercase tracking-[0.3em] font-bold mb-8">Navigation</h4>
+        <ul class="space-y-4 text-sm text-white/60">
+          <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+          <li><a href="/collections/all" class="hover:text-white transition-colors">Collection</a></li>
+          <li><a href="/pages/about" class="hover:text-white transition-colors">Our Story</a></li>
+          <li><a href="/pages/contact" class="hover:text-white transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-[10px] uppercase tracking-[0.3em] font-bold mb-8">Newsletter</h4>
+        <p class="text-xs text-white/40 mb-6 leading-relaxed">Join our inner circle for early access to new acquisitions.</p>
+        <form class="flex border-b border-white/20 pb-2">
+          <input type="email" placeholder="Email Address" class="bg-transparent border-none outline-none text-xs w-full placeholder:text-white/20">
+          <button type="submit" class="text-accent text-[10px] uppercase font-bold tracking-widest">Join</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] uppercase tracking-widest text-white/20">
+      <p>© 2026 Aethelgard Antiques. All Rights Reserved.</p>
+      <div class="flex gap-8">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Shipping & Returns</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Footer"
+    }
+  ]
+}
+{% endschema %}

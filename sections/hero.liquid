@@ -1,0 +1,49 @@
+<section class="relative h-[90vh] flex items-center justify-center overflow-hidden bg-[#1a1a1a] text-white">
+  <div class="absolute inset-0 z-0">
+    <img 
+      src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=2000" 
+      class="w-full h-full object-cover opacity-60 scale-105"
+      alt="Antique Gallery"
+    >
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60"></div>
+  </div>
+
+  <div class="container relative z-10 text-center">
+    <div class="inline-block mb-6 px-4 py-1 border border-white/30 backdrop-blur-md rounded-full">
+      <span class="text-[10px] uppercase tracking-[0.5em] font-bold">Est. 1892 • London</span>
+    </div>
+    
+    <h1 class="text-6xl md:text-8xl font-serif mb-8 leading-tight tracking-tight">
+      Timeless <span class="italic text-accent">Treasures</span><br>For The Modern Soul
+    </h1>
+    
+    <p class="text-lg md:text-xl font-light mb-12 max-w-2xl mx-auto leading-relaxed opacity-90 italic">
+      "Every piece tells a story. We help you find the one that speaks to yours."
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+      <a href="/collections/all" class="px-10 py-4 bg-accent text-black text-xs uppercase tracking-[0.3em] font-bold hover:bg-white transition-all duration-500">
+        Explore Collection
+      </a>
+      <a href="#curated" class="px-10 py-4 border border-white/50 text-white text-xs uppercase tracking-[0.3em] font-bold hover:bg-white hover:text-black transition-all duration-500">
+        Our Archive
+      </a>
+    </div>
+  </div>
+
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+    <div class="w-[1px] h-16 bg-white mx-auto"></div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}

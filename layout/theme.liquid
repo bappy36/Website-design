@@ -15,12 +15,33 @@
 
     {{ content_for_header }}
 
-    <!-- 
-      Note: This is a hybrid theme. 
-      The React AI features (Chatbot, Recommendations) are designed to be injected here.
-    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
-      body { font-family: 'Cormorant Garamond', serif; background-color: #fdfcf8; }
+      :root {
+        --color-background: #fdfcf8;
+        --color-text: #1a1a1a;
+        --color-accent: #c5a059;
+        --font-serif: 'Cormorant Garamond', serif;
+        --font-sans: 'Montserrat', sans-serif;
+      }
+
+      body { 
+        font-family: var(--font-sans); 
+        background-color: var(--color-background); 
+        color: var(--color-text);
+        margin: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1, h2, h3, h4, .font-serif { font-family: var(--font-serif); }
+      
+      .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+      .text-accent { color: var(--color-accent); }
+      .bg-accent { background-color: var(--color-accent); }
     </style>
   </head>
 
