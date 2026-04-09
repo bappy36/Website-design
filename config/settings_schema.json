@@ -3,8 +3,61 @@
     "name": "theme_info",
     "theme_name": "Aethelgard Antiques",
     "theme_version": "1.0.0",
-    "theme_author": "AI Studio",
-    "theme_documentation_url": "https://help.shopify.com",
-    "theme_support_url": "https://support.shopify.com"
+    "theme_author": "AI Studio"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#1a1a1a"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent (Gold)",
+        "default": "#c5a059"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading Font",
+        "default": "serif"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body Font",
+        "default": "sans-serif"
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest"
+      }
+    ]
   }
 ]
