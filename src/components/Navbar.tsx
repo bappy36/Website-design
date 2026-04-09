@@ -20,11 +20,13 @@ export function Navbar({ cartCount, onOpenCart, onSearch }: NavbarProps) {
         {/* Mobile Menu */}
         <div className="lg:hidden">
           <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
+            <SheetTrigger 
+              render={
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              }
+            />
             <SheetContent side="left" className="bg-background border-r">
               <div className="flex flex-col gap-8 mt-12">
                 <a href="#" className="text-2xl font-serif hover:text-accent transition-colors">Home</a>
