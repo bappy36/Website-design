@@ -1,0 +1,39 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    <title>{{ page_title }}</title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {{ content_for_header }}
+
+    <!-- 
+      Note: This is a hybrid theme. 
+      The React AI features (Chatbot, Recommendations) are designed to be injected here.
+    -->
+    <style>
+      body { font-family: 'Cormorant Garamond', serif; background-color: #fdfcf8; }
+    </style>
+  </head>
+
+  <body>
+    <main id="MainContent" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    <div id="aethelgard-ai-root"></div>
+    
+    {% comment %}
+      In a production setup, you would include your compiled React assets here:
+      {{ 'main.js' | asset_url | script_tag }}
+    {% endcomment %}
+  </body>
+</html>
