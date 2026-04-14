@@ -1,8 +1,15 @@
 <header class="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
   <div class="container h-20 flex items-center justify-between">
+    {/* Mobile Menu Toggle */}
+    <div class="lg:hidden flex-1">
+      <button id="mobile-menu-toggle" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+
     {/* Logo */}
-    <div class="flex-1 lg:flex-none text-left">
-      <h1 class="text-2xl md:text-3xl font-serif tracking-widest uppercase cursor-pointer">
+    <div class="flex-1 lg:flex-none text-center lg:text-left">
+      <h1 class="text-xl md:text-3xl font-serif tracking-widest uppercase cursor-pointer">
         Aethelgard
       </h1>
     </div>
@@ -10,13 +17,13 @@
     {/* Desktop Links */}
     <div class="hidden lg:flex items-center gap-12 text-xs uppercase tracking-[0.2em] font-medium">
       <a href="/collections/all" class="hover:text-accent transition-colors">Collection</a>
-      <a href="#" class="hover:text-accent transition-colors">Curated</a>
-      <a href="#" class="hover:text-accent transition-colors">Archive</a>
-      <a href="#" class="hover:text-accent transition-colors">Journal</a>
+      <a href="/collections/all" class="hover:text-accent transition-colors">Curated</a>
+      <a href="/pages/about" class="hover:text-accent transition-colors">Archive</a>
+      <a href="/blogs/news" class="hover:text-accent transition-colors">Journal</a>
     </div>
 
     {/* Actions */}
-    <div class="flex items-center gap-4 flex-1 lg:flex-none justify-end">
+    <div class="flex items-center gap-2 md:gap-4 flex-1 lg:flex-none justify-end">
       <button class="p-2 hover:bg-gray-100 rounded-full transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
       </button>
@@ -26,7 +33,48 @@
       </button>
     </div>
   </div>
+
+  {/* Mobile Menu Drawer */}
+  <div id="mobile-menu-drawer" class="fixed inset-0 z-[60] bg-white translate-x-[-100%] transition-transform duration-300 lg:hidden">
+    <div class="p-6 h-full flex flex-col">
+      <div class="flex items-center justify-between mb-12">
+        <h2 class="text-xl font-serif tracking-widest uppercase">Aethelgard</h2>
+        <button id="mobile-menu-close" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <nav class="flex flex-col gap-8 text-lg uppercase tracking-[0.2em] font-medium">
+        <a href="/collections/all" class="hover:text-accent transition-colors">Collection</a>
+        <a href="/collections/all" class="hover:text-accent transition-colors">Curated</a>
+        <a href="/pages/about" class="hover:text-accent transition-colors">Archive</a>
+        <a href="/blogs/news" class="hover:text-accent transition-colors">Journal</a>
+      </nav>
+      <div class="mt-auto pt-12 border-t text-xs uppercase tracking-widest text-muted-foreground">
+        <p>© 2026 Aethelgard Antiques</p>
+      </div>
+    </div>
+  </div>
 </header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const close = document.getElementById('mobile-menu-close');
+    const drawer = document.getElementById('mobile-menu-drawer');
+
+    if (toggle && drawer) {
+      toggle.addEventListener('click', () => {
+        drawer.classList.remove('translate-x-[-100%]');
+      });
+    }
+
+    if (close && drawer) {
+      close.addEventListener('click', () => {
+        drawer.classList.add('translate-x-[-100%]');
+      });
+    }
+  });
+</script>
 
 {% schema %}
 {

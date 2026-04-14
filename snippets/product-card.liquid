@@ -1,17 +1,21 @@
+{% assign product_title = product.title | default: "Rare Antique Piece" %}
+{% assign product_price = product.price | money | default: "$1,200.00" %}
+{% assign product_url = product.url | default: "#" %}
+
 <div class="group cursor-pointer">
-  <a href="{{ product.url }}">
+  <a href="{{ product_url }}">
     <div class="relative aspect-[4/5] overflow-hidden bg-muted mb-6">
       {% if product.featured_image %}
-        <img src="{{ product.featured_image | img_url: '800x' }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="{{ product.title }}">
+        <img src="{{ product.featured_image | img_url: '800x' }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="{{ product_title }}" referrerPolicy="no-referrer">
       {% else %}
-        {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-110' }}
+        <img src="https://picsum.photos/seed/{{ product_title | handleize }}/800/1000" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="{{ product_title }}" referrerPolicy="no-referrer">
       {% endif %}
       
-      {% if product.available == false %}
+      {% if product.available == false and product != empty %}
         <div class="absolute top-4 right-4 bg-black text-white px-3 py-1 text-[10px] uppercase tracking-widest font-bold">Sold Out</div>
       {% endif %}
     </div>
-    <h3 class="text-xl font-serif mb-2">{{ product.title }}</h3>
-    <p class="text-accent text-sm tracking-widest">{{ product.price | money }}</p>
+    <h3 class="text-xl font-serif mb-2">{{ product_title }}</h3>
+    <p class="text-accent text-sm tracking-widest">{{ product_price }}</p>
   </a>
 </div>

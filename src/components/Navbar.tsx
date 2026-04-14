@@ -29,10 +29,10 @@ export function Navbar({ cartCount, onOpenCart, onSearch }: NavbarProps) {
             />
             <SheetContent side="left" className="bg-background border-r">
               <div className="flex flex-col gap-8 mt-12">
-                <a href="#" className="text-2xl font-serif hover:text-accent transition-colors">Home</a>
-                <a href="#" className="text-2xl font-serif hover:text-accent transition-colors">Collection</a>
-                <a href="#" className="text-2xl font-serif hover:text-accent transition-colors">About</a>
-                <a href="#" className="text-2xl font-serif hover:text-accent transition-colors">Contact</a>
+                <a href="/" className="text-2xl font-serif hover:text-accent transition-colors">Home</a>
+                <a href="/collections/all" className="text-2xl font-serif hover:text-accent transition-colors">Collection</a>
+                <a href="/pages/about" className="text-2xl font-serif hover:text-accent transition-colors">About</a>
+                <a href="/pages/contact" className="text-2xl font-serif hover:text-accent transition-colors">Contact</a>
               </div>
             </SheetContent>
           </Sheet>
@@ -47,10 +47,10 @@ export function Navbar({ cartCount, onOpenCart, onSearch }: NavbarProps) {
 
         {/* Desktop Links */}
         <div className="hidden lg:flex items-center gap-12 text-xs uppercase tracking-[0.2em] font-medium">
-          <a href="#" className="hover:text-accent transition-colors">Collection</a>
-          <a href="#" className="hover:text-accent transition-colors">Curated</a>
-          <a href="#" className="hover:text-accent transition-colors">Archive</a>
-          <a href="#" className="hover:text-accent transition-colors">Journal</a>
+          <a href="/collections/all" className="hover:text-accent transition-colors">Collection</a>
+          <a href="/collections/all" className="hover:text-accent transition-colors">Curated</a>
+          <a href="/pages/about" className="hover:text-accent transition-colors">Archive</a>
+          <a href="/blogs/news" className="hover:text-accent transition-colors">Journal</a>
         </div>
 
         {/* Actions */}

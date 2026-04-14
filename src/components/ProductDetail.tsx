@@ -43,7 +43,7 @@ export function ProductDetail({ product, onClose, onAddToCart }: ProductDetailPr
           </Button>
 
           {/* Image Section */}
-          <div className="flex-1 relative overflow-hidden bg-muted group">
+          <div className="flex-1 relative overflow-hidden bg-muted group min-h-[300px] md:min-h-0">
             <div 
               className={`w-full h-full transition-transform duration-500 cursor-zoom-in ${isZoomed ? 'scale-150 cursor-zoom-out' : 'scale-100'}`}
               onClick={() => setIsZoomed(!isZoomed)}
@@ -66,13 +66,13 @@ export function ProductDetail({ product, onClose, onAddToCart }: ProductDetailPr
           </div>
 
           {/* Info Section */}
-          <div className="flex-1 p-8 md:p-12 overflow-y-auto">
+          <div className="flex-1 p-6 md:p-12 overflow-y-auto">
             <div className="max-w-md mx-auto">
               <span className="text-[10px] uppercase tracking-[0.3em] text-accent font-bold mb-4 block">
                 {product.category}
               </span>
-              <h2 className="text-4xl md:text-5xl font-serif mb-6">{product.name}</h2>
-              <p className="text-2xl font-light mb-8 tracking-widest">
+              <h2 className="text-3xl md:text-5xl font-serif mb-6">{product.name}</h2>
+              <p className="text-xl md:text-2xl font-light mb-8 tracking-widest">
                 ${product.price.toLocaleString()}
               </p>
               

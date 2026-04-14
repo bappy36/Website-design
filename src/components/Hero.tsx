@@ -26,20 +26,24 @@ export function Hero() {
           <span className="text-xs uppercase tracking-[0.5em] mb-6 block font-medium opacity-80">
             Est. 1892 — London
           </span>
-          <h1 className="text-5xl md:text-8xl font-serif mb-8 leading-tight">
+          <h1 className="text-4xl md:text-8xl font-serif mb-8 leading-tight">
             Timeless Elegance <br />
             <span className="italic">For The Modern Home</span>
           </h1>
-          <p className="max-w-xl mx-auto text-lg md:text-xl font-light mb-10 opacity-90 leading-relaxed">
+          <p className="max-w-xl mx-auto text-base md:text-xl font-light mb-10 opacity-90 leading-relaxed">
             Discover our curated collection of rare antiques, meticulously sourced from the finest estates across Europe and Asia.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <Button size="lg" className="bg-white text-black hover:bg-accent hover:text-white transition-all duration-500 px-10 h-14 uppercase tracking-widest text-xs">
-              Explore Collection
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-black transition-all duration-500 px-10 h-14 uppercase tracking-widest text-xs">
-              Our Story
-            </Button>
+            <a href="/collections/all">
+              <Button size="lg" className="bg-white text-black hover:bg-accent hover:text-white transition-all duration-500 px-10 h-14 uppercase tracking-widest text-xs">
+                Explore Collection
+              </Button>
+            </a>
+            <a href="/pages/about">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-black transition-all duration-500 px-10 h-14 uppercase tracking-widest text-xs">
+                Our Story
+              </Button>
+            </a>
           </div>
         </motion.div>
       </div>

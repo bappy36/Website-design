@@ -191,27 +191,27 @@ export default function App() {
                 Preserving history through timeless objects. We specialize in rare antiques from the 17th to early 20th century.
               </p>
               <div className="flex gap-6">
-                <a href="#" className="text-xs uppercase tracking-widest hover:text-accent transition-colors">Instagram</a>
-                <a href="#" className="text-xs uppercase tracking-widest hover:text-accent transition-colors">Pinterest</a>
-                <a href="#" className="text-xs uppercase tracking-widest hover:text-accent transition-colors">Journal</a>
+                <a href="https://instagram.com" className="text-xs uppercase tracking-widest hover:text-accent transition-colors">Instagram</a>
+                <a href="https://pinterest.com" className="text-xs uppercase tracking-widest hover:text-accent transition-colors">Pinterest</a>
+                <a href="/blogs/news" className="text-xs uppercase tracking-widest hover:text-accent transition-colors">Journal</a>
               </div>
             </div>
             <div>
               <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold mb-8">Navigation</h4>
               <ul className="space-y-4 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-accent transition-colors">All Collections</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">New Arrivals</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Archive</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Our Story</a></li>
+                <li><a href="/collections/all" className="hover:text-accent transition-colors">All Collections</a></li>
+                <li><a href="/collections/all" className="hover:text-accent transition-colors">New Arrivals</a></li>
+                <li><a href="/pages/about" className="hover:text-accent transition-colors">Archive</a></li>
+                <li><a href="/pages/about" className="hover:text-accent transition-colors">Our Story</a></li>
               </ul>
             </div>
             <div>
               <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold mb-8">Support</h4>
               <ul className="space-y-4 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-accent transition-colors">Shipping & Returns</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Authenticity Guarantee</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Contact Us</a></li>
+                <li><a href="/pages/shipping-returns" className="hover:text-accent transition-colors">Shipping & Returns</a></li>
+                <li><a href="/pages/authenticity" className="hover:text-accent transition-colors">Authenticity Guarantee</a></li>
+                <li><a href="/pages/privacy-policy" className="hover:text-accent transition-colors">Privacy Policy</a></li>
+                <li><a href="/pages/contact" className="hover:text-accent transition-colors">Contact Us</a></li>
               </ul>
             </div>
           </div>

@@ -1,0 +1,24 @@
+{
+  "current": {
+    "color_background": "#ffffff",
+    "color_text": "#1a1a1a",
+    "color_accent": "#c5a059",
+    "color_secondary": "#fdfcf8",
+    "color_border": "#e5e5e5",
+    "font_heading": "serif",
+    "font_body": "sans-serif",
+    "font_size_base": "16px",
+    "social_instagram_link": "https://instagram.com/aethelgard",
+    "social_pinterest_link": "https://pinterest.com/aethelgard",
+    "social_twitter_link": "https://twitter.com/aethelgard"
+  },
+  "presets": {
+    "Default": {
+      "color_background": "#ffffff",
+      "color_text": "#1a1a1a",
+      "color_accent": "#c5a059",
+      "font_heading": "serif",
+      "font_body": "sans-serif"
+    }
+  }
+}

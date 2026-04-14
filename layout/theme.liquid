@@ -7,11 +7,19 @@
     <meta name="theme-color" content="">
     <link rel="canonical" href="{{ canonical_url }}">
 
-    <title>{{ page_title }}</title>
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- assign shop_name = shop.name | default: "Aethelgard Antiques" -%}
+      {%- unless page_title contains shop_name %} &ndash; {{ shop_name }}{% endunless -%}
+    </title>
 
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
+
+    {% render 'meta-tags' %}
 
     {{ content_for_header }}
 
