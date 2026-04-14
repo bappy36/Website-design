@@ -4,13 +4,23 @@
       "type": "hero",
       "settings": {}
     },
+    "features": {
+      "type": "features",
+      "settings": {}
+    },
     "main": {
       "type": "main-index",
+      "settings": {}
+    },
+    "ai-banner": {
+      "type": "ai-banner",
       "settings": {}
     }
   },
   "order": [
     "hero",
-    "main"
+    "features",
+    "main",
+    "ai-banner"
   ]
 }
