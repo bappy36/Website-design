@@ -1,5 +1,5 @@
 <section class="relative h-[90vh] w-full overflow-hidden flex items-center justify-center">
-  {/* Background Image with Overlay */}
+  {% comment %} Background Image with Overlay {% endcomment %}
   <div 
     class="absolute inset-0 z-0"
     style="background-image: url('https://picsum.photos/seed/antique-shop/1920/1080'); background-size: cover; background-position: center;"
@@ -7,7 +7,7 @@
     <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
   </div>
 
-  {/* Content */}
+  {% comment %} Content {% endcomment %}
   <div class="container relative z-10 px-4 text-center text-white">
     <div class="animate-fade-in-up">
       <span class="text-xs uppercase tracking-[0.5em] mb-6 block font-medium opacity-80">
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  {/* Scroll Indicator */}
+  {% comment %} Scroll Indicator {% endcomment %}
   <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
     <div class="w-[1px] h-16 bg-white/30 relative">
       <div class="absolute top-0 left-0 w-full h-1/2 bg-white"></div>
