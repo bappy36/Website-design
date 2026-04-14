@@ -1,42 +1,71 @@
-<section class="relative h-[90vh] w-full overflow-hidden flex items-center justify-center">
+<section 
+  class="relative w-full overflow-hidden flex items-center {{ section.settings.text_alignment }}"
+  style="min-height: {{ section.settings.min_height }}vh;"
+>
   {% comment %} Background Image with Overlay {% endcomment %}
   <div 
     class="absolute inset-0 z-0"
-    style="background-image: url('https://picsum.photos/seed/antique-shop/1920/1080'); background-size: cover; background-position: center;"
+    style="
+      background-image: url('{{ section.settings.image | img_url: '1920x' | default: 'https://picsum.photos/seed/antique-shop/1920/1080' }}'); 
+      background-size: cover; 
+      background-position: center;
+    "
   >
-    <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+    <div 
+      class="absolute inset-0 backdrop-blur-[2px]"
+      style="background-color: {{ section.settings.overlay_color }}; opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"
+    ></div>
   </div>
 
   {% comment %} Content {% endcomment %}
-  <div class="container relative z-10 px-4 text-center text-white">
+  <div class="container relative z-10 px-4 text-white">
     <div class="animate-fade-in-up">
-      <span class="text-xs uppercase tracking-[0.5em] mb-6 block font-medium opacity-80">
-        Est. 1892 — London
-      </span>
-      <h1 class="text-4xl sm:text-5xl md:text-8xl font-serif mb-8 leading-tight">
-        Timeless Elegance <br />
-        <span class="italic font-serif">For The Modern Home</span>
-      </h1>
-      <p class="max-w-xl mx-auto text-base md:text-xl font-light mb-10 opacity-90 leading-relaxed">
-        Discover our curated collection of rare antiques, meticulously sourced from the finest estates across Europe and Asia.
-      </p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
-        <a href="/collections/all" class="bg-white text-black hover:bg-accent hover:text-white transition-all duration-500 px-10 h-14 flex items-center justify-center uppercase tracking-widest text-[10px] font-bold">
-          Explore Collection
-        </a>
-        <a href="/pages/about" class="border border-white text-white hover:bg-white hover:text-black transition-all duration-500 px-10 h-14 flex items-center justify-center uppercase tracking-widest text-[10px] font-bold">
-          Our Story
-        </a>
+      {% if section.settings.badge_text != blank %}
+        <span class="text-xs uppercase tracking-[0.5em] mb-6 block font-medium opacity-80">
+          {{ section.settings.badge_text }}
+        </span>
+      {% endif %}
+      
+      {% if section.settings.heading != blank %}
+        <h1 class="text-4xl sm:text-5xl md:text-8xl font-serif mb-8 leading-tight">
+          {{ section.settings.heading }}
+        </h1>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <p class="max-w-xl {% if section.settings.text_alignment == 'justify-center text-center' %}mx-auto{% endif %} text-base md:text-xl font-light mb-10 opacity-90 leading-relaxed">
+          {{ section.settings.subheading }}
+        </p>
+      {% endif %}
+
+      <div class="flex flex-col sm:flex-row items-center {% if section.settings.text_alignment == 'justify-center text-center' %}justify-center{% endif %} gap-6">
+        {% for block in section.blocks %}
+          {% if block.type == 'cta_button' %}
+            <a 
+              href="{{ block.settings.link }}" 
+              class="px-10 h-14 flex items-center justify-center uppercase tracking-widest text-[10px] font-bold transition-all duration-500
+                {% if block.settings.style == 'filled' %}
+                  bg-white text-black hover:bg-accent hover:text-white
+                {% else %}
+                  border border-white text-white hover:bg-white hover:text-black
+                {% endif %}"
+            >
+              {{ block.settings.text }}
+            </a>
+          {% endif %}
+        {% endfor %}
       </div>
     </div>
   </div>
 
   {% comment %} Scroll Indicator {% endcomment %}
-  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-    <div class="w-[1px] h-16 bg-white/30 relative">
-      <div class="absolute top-0 left-0 w-full h-1/2 bg-white"></div>
+  {% if section.settings.show_scroll_indicator %}
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+      <div class="w-[1px] h-16 bg-white/30 relative">
+        <div class="absolute top-0 left-0 w-full h-1/2 bg-white"></div>
+      </div>
     </div>
-  </div>
+  {% endif %}
 </section>
 
 <style>
@@ -52,10 +81,123 @@
 {% schema %}
 {
   "name": "Hero Banner",
-  "settings": [],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 40
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Est. 1892 — London"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading Text",
+      "default": "Timeless Elegance <br /> <span class='italic font-serif'>For The Modern Home</span>"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading Text",
+      "default": "Discover our curated collection of rare antiques, meticulously sourced from the finest estates across Europe and Asia."
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "justify-start text-left", "label": "Left" },
+        { "value": "justify-center text-center", "label": "Center" },
+        { "value": "justify-end text-right", "label": "Right" }
+      ],
+      "default": "justify-center text-center"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "label": "Min Height",
+      "default": 90
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "label": "Show Scroll Indicator",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "cta_button",
+      "name": "CTA Button",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Button Text",
+          "default": "Explore Collection"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button Link"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Button Style",
+          "options": [
+            { "value": "filled", "label": "Filled" },
+            { "value": "outline", "label": "Outline" }
+          ],
+          "default": "filled"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Hero Banner"
+      "name": "Hero Banner",
+      "blocks": [
+        {
+          "type": "cta_button",
+          "settings": {
+            "text": "Explore Collection",
+            "style": "filled"
+          }
+        },
+        {
+          "type": "cta_button",
+          "settings": {
+            "text": "Our Story",
+            "style": "outline"
+          }
+        }
+      ]
     }
   ]
 }

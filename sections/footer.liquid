@@ -1,44 +1,62 @@
-<footer class="bg-[#1a1a1a] text-white py-24 border-t border-white/10">
+<footer 
+  class="py-24 border-t"
+  style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }}; border-color: {{ section.settings.text_color | color_modify: 'alpha', 0.1 }};"
+>
   <div class="container">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-16">
       <div class="col-span-2">
-        <h2 class="text-3xl font-serif mb-8 tracking-widest uppercase">Aethelgard</h2>
-        <p class="text-white/60 max-w-sm leading-relaxed italic mb-8">
-          "Preserving the past for the future. Our curated collection of antiques represents the pinnacle of craftsmanship and history."
+        <h2 class="text-3xl font-serif mb-8 tracking-widest uppercase">{{ section.settings.brand_name }}</h2>
+        <p class="max-w-sm leading-relaxed italic mb-8 opacity-60">
+          "{{ section.settings.tagline }}"
         </p>
         <div class="flex gap-6">
-          <a href="https://instagram.com" class="text-white/40 hover:text-accent transition-colors">Instagram</a>
-          <a href="https://pinterest.com" class="text-white/40 hover:text-accent transition-colors">Pinterest</a>
-          <a href="/blogs/news" class="text-white/40 hover:text-accent transition-colors">Journal</a>
+          {% if section.settings.social_instagram != blank %}
+            <a href="{{ section.settings.social_instagram }}" class="opacity-40 hover:opacity-100 hover:text-accent transition-all">Instagram</a>
+          {% endif %}
+          {% if section.settings.social_pinterest != blank %}
+            <a href="{{ section.settings.social_pinterest }}" class="opacity-40 hover:opacity-100 hover:text-accent transition-all">Pinterest</a>
+          {% endif %}
+          {% if section.settings.social_twitter != blank %}
+            <a href="{{ section.settings.social_twitter }}" class="opacity-40 hover:opacity-100 hover:text-accent transition-all">Twitter/X</a>
+          {% endif %}
         </div>
       </div>
 
       <div>
-        <h4 class="text-[10px] uppercase tracking-[0.3em] font-bold mb-8">Navigation</h4>
-        <ul class="space-y-4 text-sm text-white/60">
-          <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
-          <li><a href="/collections/all" class="hover:text-white transition-colors">Collection</a></li>
-          <li><a href="/pages/about" class="hover:text-white transition-colors">Our Story</a></li>
-          <li><a href="/pages/contact" class="hover:text-white transition-colors">Contact</a></li>
+        <h4 class="text-[10px] uppercase tracking-[0.3em] font-bold mb-8">{{ section.settings.nav_heading }}</h4>
+        <ul class="space-y-4 text-sm opacity-60">
+          {% for block in section.blocks %}
+            {% if block.type == 'nav_link' %}
+              <li><a href="{{ block.settings.url }}" class="hover:opacity-100 hover:text-white transition-all">{{ block.settings.text }}</a></li>
+            {% endif %}
+          {% endfor %}
         </ul>
       </div>
 
       <div>
-        <h4 class="text-[10px] uppercase tracking-[0.3em] font-bold mb-8">Newsletter</h4>
-        <p class="text-xs text-white/40 mb-6 leading-relaxed">Join our inner circle for early access to new acquisitions.</p>
-        <form class="flex border-b border-white/20 pb-2">
-          <input type="email" placeholder="Email Address" class="bg-transparent border-none outline-none text-xs w-full placeholder:text-white/20">
-          <button type="submit" class="text-accent text-[10px] uppercase font-bold tracking-widest">Join</button>
-        </form>
+        {% if section.settings.show_newsletter %}
+          <h4 class="text-[10px] uppercase tracking-[0.3em] font-bold mb-8">{{ section.settings.newsletter_heading }}</h4>
+          <p class="text-xs opacity-40 mb-6 leading-relaxed">{{ section.settings.newsletter_description }}</p>
+          <form class="flex border-b pb-2" style="border-color: {{ section.settings.text_color | color_modify: 'alpha', 0.2 }};">
+            <input type="email" placeholder="Email Address" class="bg-transparent border-none outline-none text-xs w-full placeholder:opacity-20">
+            <button type="submit" class="text-accent text-[10px] uppercase font-bold tracking-widest">Join</button>
+          </form>
+        {% endif %}
       </div>
     </div>
 
-    <div class="mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] uppercase tracking-widest text-white/20">
-      <p>© 2026 Aethelgard Antiques. All Rights Reserved.</p>
+    <div class="mt-24 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] uppercase tracking-widest opacity-20" style="border-color: {{ section.settings.text_color | color_modify: 'alpha', 0.05 }};">
+      <p>{{ section.settings.copyright }}</p>
       <div class="flex gap-8">
-        <a href="/pages/privacy-policy">Privacy Policy</a>
-        <a href="/pages/terms-of-service">Terms of Service</a>
-        <a href="/pages/shipping-returns">Shipping & Returns</a>
+        {% if section.settings.policy_1_text != blank %}
+          <a href="{{ section.settings.policy_1_url }}">{{ section.settings.policy_1_text }}</a>
+        {% endif %}
+        {% if section.settings.policy_2_text != blank %}
+          <a href="{{ section.settings.policy_2_url }}">{{ section.settings.policy_2_text }}</a>
+        {% endif %}
+        {% if section.settings.policy_3_text != blank %}
+          <a href="{{ section.settings.policy_3_url }}">{{ section.settings.policy_3_text }}</a>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -47,10 +65,110 @@
 {% schema %}
 {
   "name": "Footer",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "Aethelgard"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline/Quote",
+      "default": "Preserving the past for the future. Our curated collection of antiques represents the pinnacle of craftsmanship and history."
+    },
+    {
+      "type": "header",
+      "content": "Social Links"
+    },
+    { "type": "url", "id": "social_instagram", "label": "Instagram URL" },
+    { "type": "url", "id": "social_pinterest", "label": "Pinterest URL" },
+    { "type": "url", "id": "social_twitter", "label": "Twitter/X URL" },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "text",
+      "id": "nav_heading",
+      "label": "Navigation Heading",
+      "default": "Navigation"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show Newsletter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter Heading",
+      "default": "Newsletter"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_description",
+      "label": "Newsletter Description",
+      "default": "Join our inner circle for early access to new acquisitions."
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright Text",
+      "default": "© 2026 Aethelgard Antiques. All Rights Reserved."
+    },
+    { "type": "text", "id": "policy_1_text", "label": "Policy 1 Text", "default": "Privacy Policy" },
+    { "type": "url", "id": "policy_1_url", "label": "Policy 1 URL" },
+    { "type": "text", "id": "policy_2_text", "label": "Policy 2 Text", "default": "Terms of Service" },
+    { "type": "url", "id": "policy_2_url", "label": "Policy 2 URL" },
+    { "type": "text", "id": "policy_3_text", "label": "Policy 3 Text", "default": "Shipping & Returns" },
+    { "type": "url", "id": "policy_3_url", "label": "Policy 3 URL" },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Navigation Link",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Link Text" },
+        { "type": "url", "id": "url", "label": "Link URL" }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Footer"
+      "name": "Footer",
+      "blocks": [
+        { "type": "nav_link", "settings": { "text": "Home", "url": "/" } },
+        { "type": "nav_link", "settings": { "text": "Collection", "url": "/collections/all" } },
+        { "type": "nav_link", "settings": { "text": "Our Story", "url": "/pages/about" } },
+        { "type": "nav_link", "settings": { "text": "Contact", "url": "/pages/contact" } }
+      ]
     }
   ]
 }

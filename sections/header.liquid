@@ -1,4 +1,7 @@
-<header class="sticky top-0 z-50 w-full border-b bg-[#f5f2ed]/80 backdrop-blur-md">
+<header 
+  class="z-50 w-full border-b backdrop-blur-md {% if section.settings.sticky %}sticky top-0{% endif %}"
+  style="background-color: {{ section.settings.bg_color | color_modify: 'alpha', 0.8 }}; border-color: {{ section.settings.border_color }};"
+>
   <div class="container h-20 flex items-center justify-between">
     {% comment %} Mobile Menu Toggle {% endcomment %}
     <div class="lg:hidden flex-1">
@@ -9,48 +12,78 @@
 
     {% comment %} Logo {% endcomment %}
     <div class="flex-1 lg:flex-none text-center lg:text-left">
-      <h1 class="text-xl md:text-3xl font-serif tracking-widest uppercase cursor-pointer">
-        Aethelgard
-      </h1>
+      <a href="/">
+        {% if section.settings.logo != blank %}
+          <img 
+            src="{{ section.settings.logo | img_url: '400x' }}" 
+            alt="{{ shop.name }}"
+            style="width: {{ section.settings.logo_width }}px;"
+            class="mx-auto lg:mx-0"
+          >
+        {% else %}
+          <h1 class="text-xl md:text-3xl font-serif tracking-widest uppercase cursor-pointer">
+            {{ shop.name }}
+          </h1>
+        {% endif %}
+      </a>
     </div>
 
     {% comment %} Desktop Links {% endcomment %}
     <div class="hidden lg:flex items-center gap-12 text-xs uppercase tracking-[0.2em] font-medium">
-      <a href="/collections/all" class="hover:text-accent transition-colors">Collection</a>
-      <a href="/collections/all" class="hover:text-accent transition-colors">Curated</a>
-      <a href="/pages/about" class="hover:text-accent transition-colors">Archive</a>
-      <a href="/blogs/news" class="hover:text-accent transition-colors">Journal</a>
+      {% for i in (1..5) %}
+        {% capture link_text_key %}link_{{ i }}_text{% endcapture %}
+        {% capture link_url_key %}link_{{ i }}_url{% endcapture %}
+        {% if section.settings[link_text_key] != blank %}
+          <a href="{{ section.settings[link_url_key] }}" class="hover:text-accent transition-colors">
+            {{ section.settings[link_text_key] }}
+          </a>
+        {% endif %}
+      {% endfor %}
     </div>
 
     {% comment %} Actions {% endcomment %}
     <div class="flex items-center gap-2 md:gap-4 flex-1 lg:flex-none justify-end">
-      <button class="p-2 hover:bg-gray-100 rounded-full transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      </button>
-      <button class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        <span class="absolute top-1 right-1 h-4 w-4 flex items-center justify-center bg-accent text-white text-[10px] font-bold rounded-full">0</span>
-      </button>
+      {% if section.settings.show_search %}
+        <button class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+      {% endif %}
+      
+      {% if section.settings.show_cart %}
+        <button class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="absolute top-1 right-1 h-4 w-4 flex items-center justify-center bg-accent text-white text-[10px] font-bold rounded-full">0</span>
+        </button>
+      {% endif %}
     </div>
   </div>
 
   {% comment %} Mobile Menu Drawer {% endcomment %}
-  <div id="mobile-menu-drawer" class="fixed inset-0 z-[60] bg-white translate-x-[-100%] transition-transform duration-300 lg:hidden">
+  <div 
+    id="mobile-menu-drawer" 
+    class="fixed inset-0 z-[60] translate-x-[-100%] transition-transform duration-300 lg:hidden"
+    style="background-color: {{ section.settings.mobile_menu_bg_color }};"
+  >
     <div class="p-6 h-full flex flex-col">
       <div class="flex items-center justify-between mb-12">
-        <h2 class="text-xl font-serif tracking-widest uppercase">Aethelgard</h2>
+        <h2 class="text-xl font-serif tracking-widest uppercase">{{ shop.name }}</h2>
         <button id="mobile-menu-close" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </div>
       <nav class="flex flex-col gap-8 text-lg uppercase tracking-[0.2em] font-medium">
-        <a href="/collections/all" class="hover:text-accent transition-colors">Collection</a>
-        <a href="/collections/all" class="hover:text-accent transition-colors">Curated</a>
-        <a href="/pages/about" class="hover:text-accent transition-colors">Archive</a>
-        <a href="/blogs/news" class="hover:text-accent transition-colors">Journal</a>
+        {% for i in (1..5) %}
+          {% capture link_text_key %}link_{{ i }}_text{% endcapture %}
+          {% capture link_url_key %}link_{{ i }}_url{% endcapture %}
+          {% if section.settings[link_text_key] != blank %}
+            <a href="{{ section.settings[link_url_key] }}" class="hover:text-accent transition-colors">
+              {{ section.settings[link_text_key] }}
+            </a>
+          {% endif %}
+        {% endfor %}
       </nav>
       <div class="mt-auto pt-12 border-t text-xs uppercase tracking-widest text-muted-foreground">
-        <p>© 2026 Aethelgard Antiques</p>
+        <p>© 2026 {{ shop.name }}</p>
       </div>
     </div>
   </div>
@@ -79,7 +112,81 @@
 {% schema %}
 {
   "name": "Header",
-  "settings": [],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo Width",
+      "default": 150
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f5f2ed"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "rgba(0,0,0,0.1)"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Sticky Header",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Navigation Links"
+    },
+    { "type": "text", "id": "link_1_text", "label": "Link 1 Text", "default": "Collection" },
+    { "type": "url", "id": "link_1_url", "label": "Link 1 URL" },
+    { "type": "text", "id": "link_2_text", "label": "Link 2 Text", "default": "Curated" },
+    { "type": "url", "id": "link_2_url", "label": "Link 2 URL" },
+    { "type": "text", "id": "link_3_text", "label": "Link 3 Text", "default": "Archive" },
+    { "type": "url", "id": "link_3_url", "label": "Link 3 URL" },
+    { "type": "text", "id": "link_4_text", "label": "Link 4 Text", "default": "Journal" },
+    { "type": "url", "id": "link_4_url", "label": "Link 4 URL" },
+    { "type": "text", "id": "link_5_text", "label": "Link 5 Text" },
+    { "type": "url", "id": "link_5_url", "label": "Link 5 URL" },
+    {
+      "type": "header",
+      "content": "Actions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show Search Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show Cart Icon",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Mobile Menu"
+    },
+    {
+      "type": "color",
+      "id": "mobile_menu_bg_color",
+      "label": "Mobile Menu Background",
+      "default": "#ffffff"
+    }
+  ],
   "presets": [
     {
       "name": "Header"

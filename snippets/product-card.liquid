@@ -1,14 +1,22 @@
 {% assign product_title = product.title | default: "Rare Antique Piece" %}
 {% assign product_price = product.price | money | default: "$1,200.00" %}
 {% assign product_url = product.url | default: "#" %}
+{% assign aspect_ratio = aspect_ratio | default: "3/4" %}
+{% assign show_sold_out = show_sold_out | default: true %}
+{% assign show_price = show_price | default: true %}
+{% assign hover_zoom = hover_zoom | default: true %}
 
 <div class="group cursor-pointer transition-all duration-500 hover:-translate-y-2">
-  <div class="relative aspect-[3/4] overflow-hidden bg-[#f5f2ed] border-none shadow-none">
+  <div class="relative overflow-hidden bg-[#f5f2ed] border-none shadow-none" style="aspect-ratio: {{ aspect_ratio }};">
     <a href="{{ product_url }}" class="block w-full h-full">
       {% if product.featured_image %}
-        <img src="{{ product.featured_image | img_url: '800x' }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="{{ product_title }}" referrerPolicy="no-referrer">
+        <img src="{{ product.featured_image | img_url: '800x' }}" class="w-full h-full object-cover transition-transform duration-1000 {% if hover_zoom %}group-hover:scale-110{% endif %}" alt="{{ product_title }}" referrerPolicy="no-referrer">
       {% else %}
-        <img src="https://picsum.photos/seed/{{ product_title | handleize }}/800/1000" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="{{ product_title }}" referrerPolicy="no-referrer">
+        {% if product == empty %}
+          {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover bg-gray-200' }}
+        {% else %}
+          <img src="https://picsum.photos/seed/{{ product_title | handleize }}/800/1000" class="w-full h-full object-cover transition-transform duration-1000 {% if hover_zoom %}group-hover:scale-110{% endif %}" alt="{{ product_title }}" referrerPolicy="no-referrer">
+        {% endif %}
       {% endif %}
     </a>
     
@@ -26,7 +34,7 @@
       </span>
     </div>
 
-    {% if product.available == false and product != empty %}
+    {% if show_sold_out and product.available == false and product != empty %}
       <div class="absolute top-4 right-4 bg-black text-white px-3 py-1 text-[10px] uppercase tracking-widest font-bold">Sold Out</div>
     {% endif %}
   </div>
@@ -34,7 +42,9 @@
   <div class="mt-6 text-center">
     <a href="{{ product_url }}">
       <h3 class="text-lg font-serif mb-1 group-hover:text-accent transition-colors">{{ product_title }}</h3>
-      <p class="text-sm font-medium tracking-widest text-muted-foreground">{{ product_price }}</p>
+      {% if show_price %}
+        <p class="text-sm font-medium tracking-widest text-muted-foreground">{{ product_price }}</p>
+      {% endif %}
     </a>
   </div>
 </div>

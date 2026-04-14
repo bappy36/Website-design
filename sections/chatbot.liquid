@@ -1,46 +1,55 @@
-<div id="shopify-chatbot" class="fixed bottom-6 right-6 z-[100]">
-  <button id="chatbot-toggle" class="bg-accent text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform duration-300">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
-  </button>
-
-  <div id="chatbot-window" class="hidden absolute bottom-20 right-0 w-[350px] bg-white rounded-2xl shadow-2xl border overflow-hidden flex flex-col">
-    <div class="bg-black text-white p-4 flex items-center justify-between">
+{% if section.settings.show_chatbot %}
+<div class="fixed z-[100] flex flex-col items-end gap-4" style="bottom: 24px; {% if section.settings.position == 'right' %}right: 24px;{% else %}left: 24px; align-items: flex-start;{% endif %}">
+  {% comment %} Chat Window {% endcomment %}
+  <div 
+    id="chat-window" 
+    class="hidden w-80 md:w-96 bg-white shadow-2xl border border-black/5 flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right"
+    style="height: {{ section.settings.window_height }}px;"
+  >
+    <div class="p-4 border-b flex items-center justify-between bg-black text-white">
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-        </div>
-        <div>
-          <h3 class="text-sm font-serif tracking-widest uppercase">AI Curator</h3>
-          <p class="text-[10px] text-accent">Online</p>
-        </div>
+        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+        <span class="text-xs uppercase tracking-widest font-bold">{{ section.settings.bot_name }}</span>
       </div>
-      <button id="chatbot-close" class="p-1 hover:bg-white/10 rounded-full">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      <button id="chat-close" class="hover:opacity-60 transition-opacity">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
     </div>
-
-    <div class="h-[350px] p-4 overflow-y-auto bg-[#fdfcf8] flex flex-col gap-4">
-      <div class="bg-white p-3 rounded-2xl rounded-tl-none border shadow-sm max-w-[85%]">
-        <p class="text-xs leading-relaxed">Welcome to Aethelgard. I am your personal curator. How may I assist you in finding a timeless treasure today?</p>
+    
+    <div class="flex-1 p-4 overflow-y-auto space-y-4 bg-[#f9f8f4]" id="chat-messages">
+      <div class="flex gap-3">
+        <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white text-[10px] font-bold">AI</div>
+        <div class="flex-1 bg-white p-3 text-sm shadow-sm border border-black/5">
+          {{ section.settings.welcome_message }}
+        </div>
       </div>
     </div>
 
     <div class="p-4 border-t bg-white">
-      <div class="flex gap-2">
-        <input type="text" placeholder="Ask about our collection..." class="flex-1 text-xs border rounded-full px-4 py-2 focus:outline-none focus:border-accent">
-        <button class="bg-accent text-white p-2 rounded-full">
+      <form id="chat-form" class="flex gap-2">
+        <input type="text" placeholder="Type your message..." class="flex-1 bg-[#f5f2ed] border-none outline-none px-4 py-2 text-sm">
+        <button type="submit" class="p-2 bg-black text-white hover:bg-accent transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
         </button>
-      </div>
+      </form>
     </div>
   </div>
+
+  {% comment %} Toggle Button {% endcomment %}
+  <button 
+    id="chat-toggle" 
+    class="w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-white transition-all duration-300 hover:scale-110 active:scale-95"
+    style="background-color: {{ section.settings.accent_color }};"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chat-icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+  </button>
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const toggle = document.getElementById('chatbot-toggle');
-    const close = document.getElementById('chatbot-close');
-    const window = document.getElementById('chatbot-window');
+    const toggle = document.getElementById('chat-toggle');
+    const close = document.getElementById('chat-close');
+    const window = document.getElementById('chat-window');
 
     if (toggle && window) {
       toggle.addEventListener('click', () => {
@@ -55,11 +64,57 @@
     }
   });
 </script>
+{% endif %}
 
 {% schema %}
 {
   "name": "Chatbot",
-  "settings": [],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_chatbot",
+      "label": "Show Chatbot",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "bot_name",
+      "label": "Bot Name",
+      "default": "AI Curator"
+    },
+    {
+      "type": "textarea",
+      "id": "welcome_message",
+      "label": "Welcome Message",
+      "default": "Greetings. I am the Aethelgard AI Curator. How may I assist you in your search for timeless treasures today?"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#c5a059"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Button Position",
+      "options": [
+        { "value": "right", "label": "Bottom Right" },
+        { "value": "left", "label": "Bottom Left" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "range",
+      "id": "window_height",
+      "min": 300,
+      "max": 700,
+      "step": 50,
+      "unit": "px",
+      "label": "Chat Window Height",
+      "default": 500
+    }
+  ],
   "presets": [
     {
       "name": "Chatbot"

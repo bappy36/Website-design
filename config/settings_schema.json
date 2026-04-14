@@ -12,7 +12,7 @@
         "type": "color",
         "id": "color_background",
         "label": "Background",
-        "default": "#ffffff"
+        "default": "#f5f2ed"
       },
       {
         "type": "color",
@@ -25,6 +25,18 @@
         "id": "color_accent",
         "label": "Accent (Gold)",
         "default": "#c5a059"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary Color",
+        "default": "#f9f8f4"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border Color",
+        "default": "rgba(0,0,0,0.1)"
       }
     ]
   },
@@ -42,6 +54,16 @@
         "id": "font_body",
         "label": "Body Font",
         "default": "sans-serif"
+      },
+      {
+        "type": "range",
+        "id": "font_base_size",
+        "min": 12,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "label": "Base Font Size",
+        "default": 16
       }
     ]
   },
@@ -57,6 +79,27 @@
         "type": "text",
         "id": "social_pinterest_link",
         "label": "Pinterest"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter/X"
+      }
+    ]
+  },
+  {
+    "name": "General Settings",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "text",
+        "id": "currency_format",
+        "label": "Currency Format",
+        "default": "${{amount}}"
       }
     ]
   }

@@ -1,42 +1,182 @@
-<section class="py-24 bg-[#f5f2ed]">
+<section class="py-24" style="background-color: {{ section.settings.bg_color }};">
   <div class="container">
     <div class="flex flex-col md:flex-row items-center justify-between mb-16 gap-8">
       <div>
-        <span class="text-xs uppercase tracking-[0.4em] text-accent font-bold mb-4 block">The Collection</span>
-        <h2 class="text-4xl md:text-5xl font-serif">Curated Masterpieces</h2>
+        {% if section.settings.subheading != blank %}
+          <span class="text-xs uppercase tracking-[0.4em] text-accent font-bold mb-4 block">{{ section.settings.subheading }}</span>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 class="text-4xl md:text-5xl font-serif">{{ section.settings.heading }}</h2>
+        {% endif %}
       </div>
       
-      <div class="flex flex-wrap gap-2 border-b border-black/5">
-        <a href="#" class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold border-b-2 border-accent bg-transparent transition-all">All</a>
-        <a href="#" class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold border-b-2 border-transparent hover:border-accent bg-transparent transition-all">Vintage Decor</a>
-        <a href="#" class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold border-b-2 border-transparent hover:border-accent bg-transparent transition-all">Antique Ceramics</a>
-        <a href="#" class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold border-b-2 border-transparent hover:border-accent bg-transparent transition-all">Collectible Figurines</a>
-        <a href="#" class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold border-b-2 border-transparent hover:border-accent bg-transparent transition-all">Rare Books</a>
-      </div>
+      {% if section.settings.show_filters %}
+        <div class="flex flex-wrap gap-2 border-b border-black/5">
+          {% for block in section.blocks %}
+            {% if block.type == 'filter_tab' %}
+              <a 
+                href="{{ block.settings.link }}" 
+                class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold border-b-2 bg-transparent transition-all
+                  {% if forloop.first %}border-accent{% else %}border-transparent hover:border-accent{% endif %}"
+              >
+                {{ block.settings.label }}
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-      {% if collections.all.products.size > 0 %}
-        {% for product in collections.all.products limit: 3 %}
-          {% render 'product-card', product: product %}
+      {% assign featured_collection = collections[section.settings.collection] %}
+      {% if featured_collection.products.size > 0 %}
+        {% for product in featured_collection.products limit: section.settings.products_limit %}
+          {% render 'product-card', 
+            product: product, 
+            aspect_ratio: section.settings.card_aspect_ratio,
+            show_sold_out: section.settings.card_show_sold_out,
+            show_price: section.settings.card_show_price,
+            hover_zoom: section.settings.card_hover_zoom
+          %}
         {% endfor %}
       {% else %}
-        <!-- Mock Products if store is empty -->
-        {% render 'product-card' %}
-        {% render 'product-card' %}
-        {% render 'product-card' %}
+        {% comment %} Mock Products if store is empty {% endcomment %}
+        {% for i in (1..section.settings.products_limit) %}
+          {% render 'product-card',
+            aspect_ratio: section.settings.card_aspect_ratio,
+            show_sold_out: section.settings.card_show_sold_out,
+            show_price: section.settings.card_show_price,
+            hover_zoom: section.settings.card_hover_zoom
+          %}
+        {% endfor %}
       {% endif %}
     </div>
+
+    {% if section.settings.view_all_text != blank %}
+      <div class="mt-16 text-center">
+        <a href="{{ section.settings.view_all_link | default: featured_collection.url }}" class="inline-block border-b border-black pb-1 text-[10px] uppercase tracking-[0.3em] font-bold hover:text-accent hover:border-accent transition-all">
+          {{ section.settings.view_all_text }}
+        </a>
+      </div>
+    {% endif %}
   </div>
 </section>
 
 {% schema %}
 {
   "name": "Featured Collection",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Curated Masterpieces"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "The Collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Products Limit",
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show Category Filters",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f5f2ed"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Button Text",
+      "default": "View All Collection"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Link"
+    },
+    {
+      "type": "header",
+      "content": "Product Card Settings"
+    },
+    {
+      "type": "select",
+      "id": "card_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        { "value": "4/5", "label": "4:5" },
+        { "value": "1/1", "label": "1:1" },
+        { "value": "3/4", "label": "3:4" }
+      ],
+      "default": "3/4"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_show_sold_out",
+      "label": "Show Sold Out Badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "card_show_price",
+      "label": "Show Price",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "card_hover_zoom",
+      "label": "Enable Hover Zoom",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "filter_tab",
+      "name": "Filter Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Tab Label",
+          "default": "Vintage Decor"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Tab Link"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Featured Collection"
+      "name": "Featured Collection",
+      "blocks": [
+        { "type": "filter_tab", "settings": { "label": "All" } },
+        { "type": "filter_tab", "settings": { "label": "Vintage Decor" } },
+        { "type": "filter_tab", "settings": { "label": "Antique Ceramics" } },
+        { "type": "filter_tab", "settings": { "label": "Collectible Figurines" } }
+      ]
     }
   ]
 }
