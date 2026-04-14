@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "color_background": "#ffffff",
@@ -10,7 +19,79 @@
     "font_size_base": "16px",
     "social_instagram_link": "https://instagram.com/aethelgard",
     "social_pinterest_link": "https://pinterest.com/aethelgard",
-    "social_twitter_link": "https://twitter.com/aethelgard"
+    "social_twitter_link": "https://twitter.com/aethelgard",
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "show_announcement": true,
+          "text": "Complimentary Worldwide Shipping on Orders Over $5,000",
+          "link": "",
+          "bg_color": "#000000",
+          "text_color": "#ffffff",
+          "font_size": 10,
+          "padding_vertical": 8
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo": "shopify://shop_images/LOGO.png",
+          "logo_width": 150,
+          "bg_color": "#f5f2ed",
+          "border_color": "#0000001a",
+          "sticky": true,
+          "link_1_text": "Collection",
+          "link_1_url": "",
+          "link_2_text": "Curated",
+          "link_2_url": "",
+          "link_3_text": "Archive",
+          "link_3_url": "",
+          "link_4_text": "Journal",
+          "link_4_url": "",
+          "link_5_text": "",
+          "link_5_url": "",
+          "show_search": true,
+          "show_cart": true,
+          "mobile_menu_bg_color": "#ffffff"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "brand_name": "Aethelgard",
+          "tagline": "Preserving the past for the future. Our curated collection of antiques represents the pinnacle of craftsmanship and history.",
+          "social_instagram": "",
+          "social_pinterest": "",
+          "social_twitter": "",
+          "nav_heading": "Navigation",
+          "show_newsletter": true,
+          "newsletter_heading": "Newsletter",
+          "newsletter_description": "Join our inner circle for early access to new acquisitions.",
+          "copyright": "© 2026 Aethelgard Antiques. All Rights Reserved.",
+          "policy_1_text": "Privacy Policy",
+          "policy_1_url": "",
+          "policy_2_text": "Terms of Service",
+          "policy_2_url": "",
+          "policy_3_text": "Shipping & Returns",
+          "policy_3_url": "",
+          "bg_color": "#1a1a1a",
+          "text_color": "#ffffff"
+        }
+      },
+      "chatbot": {
+        "type": "chatbot",
+        "settings": {
+          "show_chatbot": true,
+          "bot_name": "AI Curator",
+          "welcome_message": "Greetings. I am the Aethelgard AI Curator. How may I assist you in your search for timeless treasures today?",
+          "accent_color": "#c5a059",
+          "position": "right",
+          "window_height": 500
+        }
+      }
+    },
+    "content_for_index": []
   },
   "presets": {
     "Default": {
