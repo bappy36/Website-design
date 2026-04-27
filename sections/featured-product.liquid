@@ -1,0 +1,58 @@
+<section class="py-24 bg-[#fdfcf8]">
+  <div class="container">
+    {% assign product = all_products[section.settings.product] %}
+    {% if product != blank %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div class="product-media">
+          <div class="aspect-[3/4] overflow-hidden bg-white">
+            <img src="{{ product.featured_image | img_url: '1000x' }}" alt="{{ product.title }}" class="w-full h-full object-cover">
+          </div>
+        </div>
+        <div class="product-info space-y-6">
+          <span class="text-xs uppercase tracking-[0.4em] text-accent font-bold">{{ product.type | default: 'Featured' }}</span>
+          <h2 class="text-4xl md:text-5xl font-serif">{{ product.title }}</h2>
+          <div class="text-2xl tracking-widest">{{ product.price | money }}</div>
+          <div class="prose prose-sm text-muted-foreground italic line-clamp-3">
+            {{ product.description | strip_html }}
+          </div>
+          <div class="pt-6">
+            <a href="{{ product.url }}" class="inline-block bg-black text-white px-12 py-5 uppercase tracking-[0.3em] text-[10px] font-bold hover:bg-accent transition-all duration-500">
+              View Full Details
+            </a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      {% comment %} Onboarding State {% endcomment %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center opacity-40">
+        <div class="aspect-[3/4] bg-gray-200 flex items-center justify-center">
+          {{ 'product-1' | placeholder_svg_tag: 'w-full h-full' }}
+        </div>
+        <div class="space-y-6">
+          <span class="text-xs uppercase tracking-[0.4em] font-bold">Category</span>
+          <h2 class="text-4xl md:text-5xl font-serif">Product Title</h2>
+          <div class="text-2xl tracking-widest">$0.00</div>
+          <p class="italic">Select a product to display its details here.</p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Product",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Product"
+    }
+  ]
+}
+{% endschema %}

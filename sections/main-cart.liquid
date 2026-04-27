@@ -1,0 +1,77 @@
+<section class="py-24 bg-[#f5f2ed]">
+  <div class="container">
+    <h1 class="text-4xl md:text-6xl font-serif mb-12">Your Collection</h1>
+
+    {% if cart.item_count > 0 %}
+      <form action="/cart" method="post" novalidate>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
+          {% comment %} Cart Items {% endcomment %}
+          <div class="lg:col-span-2 space-y-8">
+            {% for item in cart.items %}
+              <div class="cart-item flex gap-6 pb-8 border-b border-black/5">
+                <div class="w-32 aspect-[3/4] overflow-hidden bg-white">
+                  <img src="{{ item.image | img_url: '400x' }}" alt="{{ item.product.title }}" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 class="text-xl font-serif mb-2">{{ item.product.title }}</h3>
+                    {% unless item.variant.title contains 'Default' %}
+                      <p class="text-xs uppercase tracking-widest text-muted-foreground">{{ item.variant.title }}</p>
+                    {% endunless %}
+                    <p class="mt-4 text-accent uppercase tracking-widest text-sm">{{ item.price | money }}</p>
+                  </div>
+                  <div class="flex items-center justify-between mt-6">
+                    <div class="flex border border-black/10 w-24">
+                      <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" class="w-full text-center bg-transparent border-none outline-none text-sm py-1">
+                    </div>
+                    <a href="/cart/change?line={{ forloop.index }}&quantity=0" class="text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100 transition-opacity">Remove</a>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          {% comment %} Summary {% endcomment %}
+          <div class="lg:col-span-1">
+            <div class="bg-white p-8 space-y-6">
+              <h2 class="text-xs uppercase tracking-widest font-bold border-b pb-4">Summary</h2>
+              <div class="flex justify-between items-center text-lg">
+                <span>Subtotal</span>
+                <span class="font-bold">{{ cart.total_price | money }}</span>
+              </div>
+              
+              {% if cart.taxes_included or shop.shipping_policy.body != blank %}
+                <p class="text-xs text-muted-foreground italic">
+                  {% if cart.taxes_included %}
+                    Taxes included.
+                  {% endif %}
+                  {% if shop.shipping_policy.body != blank %}
+                    Shipping calculated at checkout.
+                  {% endif %}
+                </p>
+              {% endif %}
+
+              <div class="pt-6">
+                <button type="submit" name="checkout" class="w-full bg-black text-white hover:bg-accent py-4 uppercase tracking-[0.3em] text-[10px] font-bold transition-all duration-500">
+                  Proceed to Checkout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    {% else %}
+      <div class="text-center py-12">
+        <p class="text-xl italic mb-8 opacity-60">Your acquisition gallery is currently empty.</p>
+        <a href="/collections/all" class="inline-block bg-black text-white px-10 py-4 uppercase tracking-widest text-[10px] font-bold">Explore Collection</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart Page",
+  "settings": []
+}
+{% endschema %}

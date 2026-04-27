@@ -1,0 +1,20 @@
+{
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "brand_name": "Aethelgard",
+        "tagline": "Preserving the past for the future. Our curated collection of antiques represents the pinnacle of craftsmanship and history.",
+        "nav_heading": "Navigation",
+        "show_newsletter": true,
+        "newsletter_heading": "Newsletter",
+        "bg_color": "#1a1a1a",
+        "text_color": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

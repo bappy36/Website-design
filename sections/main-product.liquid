@@ -1,0 +1,163 @@
+<section class="py-12 bg-[#f5f2ed]">
+  <div class="container">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      {% comment %} Product Images {% endcomment %}
+      <div class="product-gallery">
+        <div class="main-image aspect-[3/4] overflow-hidden bg-white mb-4">
+          {% if product.selected_or_first_available_variant.featured_image %}
+            <img src="{{ product.selected_or_first_available_variant.featured_image | img_url: '1000x' }}" alt="{{ product.title }}" class="w-full h-full object-cover" id="ProductMainImage">
+          {% else %}
+            <img src="{{ product.featured_image | img_url: '1000x' }}" alt="{{ product.title }}" class="w-full h-full object-cover" id="ProductMainImage">
+          {% endif %}
+        </div>
+        <div class="thumbnail-grid grid grid-cols-4 gap-4">
+          {% for image in product.images %}
+            <div class="thumbnail aspect-square overflow-hidden cursor-pointer border hover:border-accent transition-all" onclick="updateMainImage('{{ image | img_url: '1000x' }}')">
+              <img src="{{ image | img_url: '200x' }}" alt="{{ image.alt }}" class="w-full h-full object-cover">
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% comment %} Product Info {% endcomment %}
+      <div class="product-info space-y-6">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when '@app' %}
+              {% render block %}
+
+            {% when 'title' %}
+              <h1 class="text-4xl md:text-5xl font-serif leading-tight">
+                {{ product.title }}
+              </h1>
+
+            {% when 'price' %}
+              <div class="price-container flex items-center gap-4">
+                <span class="text-2xl font-medium tracking-widest text-[#c5a059]" id="ProductPrice">
+                  {{ product.selected_or_first_available_variant.price | money }}
+                </span>
+                {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
+                  <span class="text-lg line-through opacity-40">
+                    {{ product.selected_or_first_available_variant.compare_at_price | money }}
+                  </span>
+                {% endif %}
+                {% if product.selected_or_first_available_variant.unit_price_measurement %}
+                  <span class="text-xs opacity-60">
+                    {{ product.selected_or_first_available_variant.unit_price | money }} / {{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}
+                  </span>
+                {% endif %}
+              </div>
+
+            {% when 'description' %}
+              <div class="prose prose-sm max-w-none text-[#1a1a1a] opacity-80 leading-relaxed italic">
+                {{ product.description }}
+              </div>
+
+            {% when 'variant_picker' %}
+              {% unless product.has_only_default_variant %}
+                <div class="variant-picker space-y-4">
+                  {% for option in product.options_with_values %}
+                    <div class="option">
+                      <label class="text-[10px] uppercase tracking-[0.3em] font-bold block mb-2">{{ option.name }}</label>
+                      <select class="w-full bg-white border border-black/10 px-4 py-3 text-sm focus:border-accent outline-none" onchange="updateVariant()">
+                        {% for value in option.values %}
+                          <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>
+                            {{ value }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endunless %}
+
+            {% when 'quantity_selector' %}
+              <div class="quantity-selector">
+                <label class="text-[10px] uppercase tracking-[0.3em] font-bold block mb-2">Quantity</label>
+                <div class="flex border border-black/10 w-32">
+                  <button class="px-3 py-2 hover:bg-gray-100" onclick="updateQty(-1)">-</button>
+                  <input type="number" id="Quantity" value="1" min="1" class="w-full text-center bg-transparent border-none outline-none">
+                  <button class="px-3 py-2 hover:bg-gray-100" onclick="updateQty(1)">+</button>
+                </div>
+              </div>
+
+            {% when 'buy_buttons' %}
+              <div class="buy-buttons">
+                {% if product.available %}
+                  <button class="w-full bg-black text-white hover:bg-accent py-5 uppercase tracking-[0.3em] text-[10px] font-bold transition-all duration-500">
+                    Add to Cart
+                  </button>
+                {% else %}
+                  <button disabled class="w-full bg-gray-300 text-gray-500 py-5 uppercase tracking-[0.3em] text-[10px] font-bold cursor-not-allowed">
+                    Sold Out
+                  </button>
+                {% endif %}
+              </div>
+
+          {% endcase %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function updateMainImage(url) {
+    document.getElementById('ProductMainImage').src = url;
+  }
+
+  function updateQty(delta) {
+    const input = document.getElementById('Quantity');
+    let val = parseInt(input.value) + delta;
+    if (val < 1) val = 1;
+    input.value = val;
+  }
+
+  function updateVariant() {
+    // In a real Shopify theme, this would update the URL and handle variant switches
+    // For this preview, we'll keep it simple
+    console.log('Variant updated');
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Product Information",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant Picker",
+      "limit": 1
+    },
+    {
+      "type": "quantity_selector",
+      "name": "Quantity Selector",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    }
+  ],
+  "settings": []
+}
+{% endschema %}

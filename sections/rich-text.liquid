@@ -1,0 +1,79 @@
+<section class="py-24 bg-[#f5f2ed]">
+  <div class="container text-center max-w-3xl">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'heading' %}
+          <h2 class="text-4xl md:text-6xl font-serif mb-8 leading-tight">
+            {{ block.settings.heading }}
+          </h2>
+        {% when 'text' %}
+          <div class="prose prose-lg mx-auto text-muted-foreground mb-10 leading-relaxed italic">
+            {{ block.settings.text }}
+          </div>
+        {% when 'button' %}
+          <a href="{{ block.settings.button_link }}" class="inline-block border-b border-black pb-1 text-[10px] uppercase tracking-[0.3em] font-bold hover:text-accent hover:border-accent transition-all">
+            {{ block.settings.button_label }}
+          </a>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich Text",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Our Philosophy"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Description",
+          "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Button Label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rich Text",
+      "blocks": [
+        { "type": "heading" },
+        { "type": "text" }
+      ]
+    }
+  ]
+}
+{% endschema %}
