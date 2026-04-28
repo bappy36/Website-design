@@ -54,13 +54,14 @@
   </head>
 
   <body>
-    {% sections 'header-group' %}
+    {% section 'announcement-bar' %}
+    {% section 'header' %}
 
     <main id="MainContent" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
 
-    {% sections 'footer-group' %}
+    {% section 'footer' %}
     {% section 'chatbot' %}
 
     <div id="aethelgard-ai-root"></div>

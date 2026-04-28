@@ -47,19 +47,19 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const toggle = document.getElementById('chat-toggle');
-    const close = document.getElementById('chat-close');
-    const window = document.getElementById('chat-window');
+    const chatToggle = document.getElementById('chat-toggle');
+    const chatClose = document.getElementById('chat-close');
+    const chatWin = document.getElementById('chat-window');
 
-    if (toggle && window) {
-      toggle.addEventListener('click', () => {
-        window.classList.toggle('hidden');
+    if (chatToggle && chatWin) {
+      chatToggle.addEventListener('click', () => {
+        chatWin.classList.toggle('hidden');
       });
     }
 
-    if (close && window) {
-      close.addEventListener('click', () => {
-        window.classList.add('hidden');
+    if (chatClose && chatWin) {
+      chatClose.addEventListener('click', () => {
+        chatWin.classList.add('hidden');
       });
     }
   });
