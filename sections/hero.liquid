@@ -40,14 +40,14 @@
 
       <div class="flex flex-col sm:flex-row items-center {% if section.settings.text_alignment == 'justify-center text-center' %}justify-center{% endif %} gap-6">
         {% for block in section.blocks %}
-          {% if block.type == 'cta_button' %}
+          {% if block.type == 'cta_button' and block.settings.text != blank %}
             <a 
               href="{{ block.settings.link }}" 
-              class="px-10 h-14 flex items-center justify-center uppercase tracking-widest text-[10px] font-bold transition-all duration-500
+              class="px-10 h-14 flex items-center justify-center uppercase tracking-widest text-[10px] font-bold transition-all duration-500 rounded-sm
                 {% if block.settings.style == 'filled' %}
-                  bg-white text-black hover:bg-accent hover:text-white
+                  bg-white text-black hover:bg-accent hover:text-white hover:scale-105 active:scale-95
                 {% else %}
-                  border border-white text-white hover:bg-white hover:text-black
+                  border border-white/50 text-white hover:bg-white hover:text-black hover:border-white hover:scale-105 active:scale-95
                 {% endif %}"
             >
               {{ block.settings.text }}

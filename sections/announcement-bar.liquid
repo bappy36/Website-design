@@ -1,21 +1,53 @@
 {% if section.settings.show_announcement %}
-  {% if section.settings.link != blank %}
-    <a href="{{ section.settings.link }}" class="block">
-  {% endif %}
   <div 
-    class="uppercase tracking-[0.3em] text-center font-bold"
-    style="
-      background-color: {{ section.settings.bg_color }}; 
-      color: {{ section.settings.text_color }}; 
-      font-size: {{ section.settings.font_size }}px;
-      padding-top: {{ section.settings.padding_vertical }}px;
-      padding-bottom: {{ section.settings.padding_vertical }}px;
-    "
+    id="announcement-bar"
+    class="relative z-[60] py-2 px-4 flex items-center justify-center transition-all duration-300"
+    style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};"
   >
-    {{ section.settings.text }}
+    <div class="container flex items-center justify-center relative">
+      <div class="flex-1 text-center">
+        {% for block in section.blocks %}
+          <div 
+            class="announcement-item {% unless forloop.first %}hidden{% endunless %} animate-fade-in"
+            data-index="{{ forloop.index0 }}"
+            {{ block.shopify_attributes }}
+          >
+            {% if block.settings.link != blank %}<a href="{{ block.settings.link }}" class="hover:opacity-80 transition-opacity">{% endif %}
+            <span class="uppercase tracking-[0.3em] font-bold text-[8px] md:text-[10px]">{{ block.settings.text }}</span>
+            {% if block.settings.link != blank %}</a>{% endif %}
+          </div>
+        {% endfor %}
+        
+        {% if section.blocks.size == 0 %}
+          <span class="uppercase tracking-[0.3em] font-bold text-[10px]">{{ section.settings.text }}</span>
+        {% endif %}
+      </div>
+
+      {% if section.settings.show_close %}
+        <button 
+          onclick="document.getElementById('announcement-bar').remove()"
+          class="absolute right-0 p-1 hover:opacity-50 transition-opacity"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      {% endif %}
+    </div>
   </div>
-  {% if section.settings.link != blank %}
-    </a>
+
+  {% if section.blocks.size > 1 %}
+    <script>
+      (function() {
+        let current = 0;
+        const items = document.querySelectorAll('.announcement-item');
+        const interval = {{ section.settings.autoplay_speed | default: 5000 }};
+        
+        setInterval(() => {
+          items[current].classList.add('hidden');
+          current = (current + 1) % items.length;
+          items[current].classList.remove('hidden');
+        }, interval);
+      })();
+    </script>
   {% endif %}
 {% endif %}
 
@@ -30,15 +62,26 @@
       "default": true
     },
     {
+      "type": "checkbox",
+      "id": "show_close",
+      "label": "Show Close Button",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "text",
-      "label": "Announcement Text",
+      "label": "Default Text (if no blocks)",
       "default": "Complimentary Worldwide Shipping on Orders Over $5,000"
     },
     {
-      "type": "url",
-      "id": "link",
-      "label": "Link URL"
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2000,
+      "max": 10000,
+      "step": 500,
+      "unit": "ms",
+      "label": "Autoplay Speed",
+      "default": 5000
     },
     {
       "type": "color",
@@ -51,26 +94,34 @@
       "id": "text_color",
       "label": "Text Color",
       "default": "#ffffff"
-    },
+    }
+  ],
+  "blocks": [
     {
-      "type": "range",
-      "id": "font_size",
-      "min": 8,
-      "max": 16,
-      "step": 1,
-      "unit": "px",
-      "label": "Font Size",
-      "default": 10
-    },
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Complimentary Worldwide Shipping"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
     {
-      "type": "range",
-      "id": "padding_vertical",
-      "min": 4,
-      "max": 20,
-      "step": 2,
-      "unit": "px",
-      "label": "Padding (Top/Bottom)",
-      "default": 8
+      "name": "Announcement Bar",
+      "blocks": [
+        { "type": "announcement", "settings": { "text": "Complimentary Worldwide Shipping on Orders Over $5,000" } },
+        { "type": "announcement", "settings": { "text": "New Victorian Era Collection Just Arrived" } }
+      ]
     }
   ]
 }

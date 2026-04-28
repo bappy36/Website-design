@@ -30,15 +30,21 @@
 
     {% comment %} Desktop Links {% endcomment %}
     <div class="hidden lg:flex items-center gap-12 text-xs uppercase tracking-[0.2em] font-medium">
-      {% for i in (1..5) %}
-        {% capture link_text_key %}link_{{ i }}_text{% endcapture %}
-        {% capture link_url_key %}link_{{ i }}_url{% endcapture %}
-        {% if section.settings[link_text_key] != blank %}
-          <a href="{{ section.settings[link_url_key] }}" class="hover:text-accent transition-colors">
-            {{ section.settings[link_text_key] }}
-          </a>
-        {% endif %}
-      {% endfor %}
+      {% if section.settings.menu != blank %}
+        {% for link in linklists[section.settings.menu].links %}
+          <a href="{{ link.url }}" class="hover:text-accent transition-colors">{{ link.title }}</a>
+        {% endfor %}
+      {% else %}
+        {% for i in (1..5) %}
+          {% capture link_text_key %}link_{{ i }}_text{% endcapture %}
+          {% capture link_url_key %}link_{{ i }}_url{% endcapture %}
+          {% if section.settings[link_text_key] != blank %}
+            <a href="{{ section.settings[link_url_key] }}" class="hover:text-accent transition-colors">
+              {{ section.settings[link_text_key] }}
+            </a>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
     </div>
 
     {% comment %} Actions {% endcomment %}
@@ -72,15 +78,21 @@
         </button>
       </div>
       <nav class="flex flex-col gap-8 text-lg uppercase tracking-[0.2em] font-medium">
-        {% for i in (1..5) %}
-          {% capture link_text_key %}link_{{ i }}_text{% endcapture %}
-          {% capture link_url_key %}link_{{ i }}_url{% endcapture %}
-          {% if section.settings[link_text_key] != blank %}
-            <a href="{{ section.settings[link_url_key] }}" class="hover:text-accent transition-colors">
-              {{ section.settings[link_text_key] }}
-            </a>
-          {% endif %}
-        {% endfor %}
+        {% if section.settings.menu != blank %}
+          {% for link in linklists[section.settings.menu].links %}
+            <a href="{{ link.url }}" class="hover:text-accent transition-colors">{{ link.title }}</a>
+          {% endfor %}
+        {% else %}
+          {% for i in (1..5) %}
+            {% capture link_text_key %}link_{{ i }}_text{% endcapture %}
+            {% capture link_url_key %}link_{{ i }}_url{% endcapture %}
+            {% if section.settings[link_text_key] != blank %}
+              <a href="{{ section.settings[link_url_key] }}" class="hover:text-accent transition-colors">
+                {{ section.settings[link_text_key] }}
+              </a>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
       </nav>
       <div class="mt-auto pt-12 border-t text-xs uppercase tracking-widest text-muted-foreground">
         <p>© 2026 {{ shop.name }}</p>
@@ -147,8 +159,14 @@
       "default": true
     },
     {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation Menu",
+      "default": "main-menu"
+    },
+    {
       "type": "header",
-      "content": "Navigation Links"
+      "content": "Manual Navigation Overrides"
     },
     { "type": "text", "id": "link_1_text", "label": "Link 1 Text", "default": "Collection" },
     { "type": "url", "id": "link_1_url", "label": "Link 1 URL" },
