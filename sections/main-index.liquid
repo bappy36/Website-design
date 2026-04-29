@@ -1,70 +1,134 @@
 <section class="py-24" style="background-color: {{ section.settings.bg_color }};">
   <div class="container">
-    <div class="flex flex-col md:flex-row items-center justify-between mb-16 gap-8">
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8 border-b border-black/5 pb-8">
       <div>
         {% if section.settings.subheading != blank %}
-          <span class="text-xs uppercase tracking-[0.4em] text-accent font-bold mb-4 block">{{ section.settings.subheading }}</span>
+          <span class="text-[10px] uppercase tracking-[0.4em] text-accent font-bold mb-4 block">{{ section.settings.subheading }}</span>
         {% endif %}
         {% if section.settings.heading != blank %}
-          <h2 class="text-4xl md:text-5xl font-serif">{{ section.settings.heading }}</h2>
+          <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif leading-tight">{{ section.settings.heading }}</h2>
         {% endif %}
       </div>
       
       {% if section.settings.show_filters %}
-        <div class="flex flex-wrap gap-0 border border-black/10 rounded-sm overflow-hidden bg-white/50 backdrop-blur-sm">
+        <nav class="flex flex-wrap items-center gap-1 md:gap-2">
           {% for block in section.blocks %}
             {% if block.type == 'filter_tab' %}
-              <a 
-                href="{{ block.settings.link }}" 
-                class="px-8 py-4 text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 border-r border-black/10 last:border-r-0
+              <button 
+                data-category="{{ block.settings.label }}"
+                class="filter-tab px-6 py-3 text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300 rounded-sm
                   {% if forloop.first %}
-                    bg-white text-black shadow-sm
+                    bg-white text-black shadow-sm border border-black/10 active-filter
                   {% else %}
-                    text-gray-500 hover:text-black hover:bg-white/80
+                    text-gray-400 hover:text-black hover:bg-white/50
                   {% endif %}"
+                {{ block.shopify_attributes }}
               >
                 {{ block.settings.label }}
-              </a>
+              </button>
             {% endif %}
           {% endfor %}
-        </div>
+        </nav>
       {% endif %}
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20" id="product-grid">
       {% assign featured_collection = collections[section.settings.collection] %}
       {% if featured_collection.products.size > 0 %}
         {% for product in featured_collection.products limit: section.settings.products_limit %}
-          {% render 'product-card', 
-            product: product, 
-            aspect_ratio: section.settings.card_aspect_ratio,
-            show_sold_out: section.settings.card_show_sold_out,
-            show_price: section.settings.card_show_price,
-            hover_zoom: section.settings.card_hover_zoom
-          %}
+          <div class="product-card-item animate-fade-in" data-category="{{ product.type | default: 'Vintage Decor' }}">
+            {% render 'product-card', 
+              product: product, 
+              aspect_ratio: section.settings.card_aspect_ratio,
+              show_sold_out: section.settings.card_show_sold_out,
+              show_price: section.settings.card_show_price,
+              hover_zoom: section.settings.card_hover_zoom
+            %}
+          </div>
         {% endfor %}
       {% else %}
         {% comment %} Mock Products if store is empty {% endcomment %}
+        {% assign mock_categories = "Vintage Decor,Antique Ceramics,Collectible Figurines,Rare Books" | split: "," %}
         {% for i in (1..section.settings.products_limit) %}
-          {% render 'product-card',
-            aspect_ratio: section.settings.card_aspect_ratio,
-            show_sold_out: section.settings.card_show_sold_out,
-            show_price: section.settings.card_show_price,
-            hover_zoom: section.settings.card_hover_zoom
-          %}
+          {% assign cat_index = i | modulo: 4 %}
+          <div class="product-card-item animate-fade-in" data-category="{{ mock_categories[cat_index] }}">
+            {% render 'product-card',
+              aspect_ratio: section.settings.card_aspect_ratio,
+              show_sold_out: section.settings.card_show_sold_out,
+              show_price: section.settings.card_show_price,
+              hover_zoom: section.settings.card_hover_zoom,
+              mock_category: mock_categories[cat_index]
+            %}
+          </div>
         {% endfor %}
       {% endif %}
     </div>
 
     {% if section.settings.view_all_text != blank %}
-      <div class="mt-16 text-center">
-        <a href="{{ section.settings.view_all_link | default: featured_collection.url }}" class="inline-block border-b border-black pb-1 text-[10px] uppercase tracking-[0.3em] font-bold hover:text-accent hover:border-accent transition-all">
-          {{ section.settings.view_all_text }}
+      <div class="mt-20 text-center">
+        <a href="{{ section.settings.view_all_link | default: featured_collection.url }}" class="group inline-flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] font-bold">
+          <span class="border-b border-black/20 group-hover:border-accent group-hover:text-accent transition-all pb-1">{{ section.settings.view_all_text }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent group-hover:translate-x-2 transition-transform"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
       </div>
     {% endif %}
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.filter-tab');
+    const items = document.querySelectorAll('.product-card-item');
+
+    if (tabs.length > 0 && items.length > 0) {
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const category = tab.getAttribute('data-category').toLowerCase();
+          
+          // Update active state
+          tabs.forEach(t => {
+            t.classList.remove('bg-white', 'text-black', 'shadow-sm', 'border', 'border-black/10', 'active-filter');
+            t.classList.add('text-gray-400', 'hover:text-black', 'hover:bg-white/50');
+          });
+          
+          tab.classList.add('bg-white', 'text-black', 'shadow-sm', 'border', 'border-black/10', 'active-filter');
+          tab.classList.remove('text-gray-400', 'hover:text-black', 'hover:bg-white/50');
+
+          // Filter items
+          items.forEach(item => {
+            const itemCategory = item.getAttribute('data-category').toLowerCase();
+            if (category === 'all' || itemCategory === category) {
+              item.style.display = 'block';
+              setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+              }, 10);
+            } else {
+              item.style.opacity = '0';
+              item.style.transform = 'translateY(20px)';
+              setTimeout(() => {
+                item.style.display = 'none';
+              }, 300);
+            }
+          });
+        });
+      });
+    }
+  });
+</script>
+
+<style>
+  .product-card-item {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .animate-fade-in {
+    animation: fadeInUp 0.8s ease forwards;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
 
 {% schema %}
 {
